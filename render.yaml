@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: prodigy
+    name: tla-annotation-app
     runtime: python
     repo: https://github.com/the-learning-agency-lab/annotation-app
     plan: starter
