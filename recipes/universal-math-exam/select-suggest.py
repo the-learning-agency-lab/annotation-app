@@ -125,7 +125,7 @@ def process_latex_in_text(text):
         help="Don't display the meta information at the bottom of the card",
     ),
 )
-def cat_facts_ner(
+def select_suggest(
     dataset,
     inputs_path: Path,
     display_template_path: Optional[Path] = None,
@@ -148,7 +148,39 @@ def cat_facts_ner(
     # We can use the blocks to override certain config and content, and set
     # "text": None for the choice interface so it doesn't also render the text
     blocks = [
-        {"view_id": "choice"},
+        {"view_id": "html"},
+        {
+            "view_id": "text_input",
+            "field_id": "overall",
+            "field_label": "Overall",
+            "field_placeholder": "Score from 0 to 3",
+            "field_rows": 1,
+            "field_suggestions": ["0", "1", "2", "3"],
+        },
+        {
+            "view_id": "text_input",
+            "field_id": "topic",
+            "field_label": "Topic",
+            "field_placeholder": "Score from 0 to 3",
+            "field_rows": 1,
+            "field_suggestions": ["0", "1", "2", "3"],
+        },
+        {
+            "view_id": "text_input",
+            "field_id": "vocabulary",
+            "field_label": "Vocabulary",
+            "field_placeholder": "Score from 0 to 3",
+            "field_rows": 1,
+            "field_suggestions": ["0", "1", "2", "3"],
+        },
+        {
+            "view_id": "text_input",
+            "field_id": "choices",
+            "field_label": "Choices",
+            "field_placeholder": "Score from 0 to 3",
+            "field_rows": 1,
+            "field_suggestions": ["0", "1", "2", "3"],
+        },
         {
             "view_id": "text_input",
             "field_rows": 3,
