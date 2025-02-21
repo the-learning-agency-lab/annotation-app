@@ -31,4 +31,4 @@ services:
 databases:
   - name: prodigyDB
     databaseName: prodigy
-    plan: standard
+    plan: basic-256mb
