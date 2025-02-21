@@ -3,7 +3,7 @@ services:
     name: prodigy
     runtime: python
     repo: https://github.com/the-learning-agency-lab/annotation-app
-    plan: standard
+    plan: starter
     branch: main
     buildCommand: ./setup.sh
     startCommand: prodigy select-suggest ume-test inputs/ume/ -F recipes/universal-math-exam/select-suggest.py --resume
