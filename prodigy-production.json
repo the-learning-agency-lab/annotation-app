@@ -5,7 +5,7 @@
     "db": "postgresql",
     "db_settings": {
         "postgresql": {
-            "dbname": "prodigy"
+            "dbname": "prodigy_xxio"
         }
     },
     "feed_overlap": false,
