@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: prodigy
+    runtime: python
+    repo: https://github.com/the-learning-agency-lab/annotation-app
+    plan: standard
+    branch: main
+    buildCommand: ./setup.sh
+    startCommand: prodigy select-suggest ume inputs/ume/ -F recipes/universal-math-exam/select-suggest.py --resume
+    envVars:
+      - key: PRODIGY_KEY
+        sync: false
+      - key: PRODIGY_CONFIG
+        value: prodigy-production.json
+      - key: PGDATABASE
+        fromDatabase:
+          name: prodigyDB
+          property: database
+      - key: PGHOST
+        fromDatabase:
+          name: prodigyDB
+          property: host
+      - key: PGUSER
+        fromDatabase:
+          name: prodigyDB
+          property: user
+      - key: PGPASSWORD
+        fromDatabase:
+          name: prodigyDB
+          property: password
+databases:
+  - name: prodigyDB
+    databaseName: prodigy
+    plan: standard

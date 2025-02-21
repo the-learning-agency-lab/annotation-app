@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #1a365d;
+            margin-top: 1.5em;
+        }
+
+        .intro {
+            background-color: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+            margin-bottom: 2rem;
+        }
+
+        .criteria-section {
+            margin-bottom: 2rem;
+        }
+
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        .rubric-table th,
+        .rubric-table td {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            vertical-align: top;
+        }
+
+        .rubric-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            text-align: left;
+        }
+
+        .level-excellent {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+        }
+
+        .level-satisfactory {
+            background-color: #f0f9ff;
+            border-left: 4px solid #0ea5e9;
+        }
+
+        .level-needs-improvement {
+            background-color: #fef9c3;
+            border-left: 4px solid #eab308;
+        }
+
+        .level-inadequate {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+        }
+
+        .example {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+        }
+
+        .good-example {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+        }
+
+        .bad-example {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .interface-section {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="intro">
+        <h1>Universal Math Exam Multiple-Choice Question Rubric</h1>
+        <p>This rubric provides guidelines for creating high-quality multiple-choice math questions aligned with
+            standardized
+            test formats. Use these criteria to evaluate and improve question quality across different components.</p>
+    </div>
+
+    <div class="criteria-section">
+        <h2>Evaluation Components</h2>
+        <p>Each multiple-choice question is evaluated on three key components:</p>
+        <ol>
+            <li><strong>Question Overall</strong> - Alignment with topic labels and appropriate difficulty level</li>
+            <li><strong>Question Stem</strong> - Clarity, relevance and proper structuring of the central problem</li>
+            <li><strong>Answer Choices</strong> - Quality and effectiveness of response options</li>
+        </ol>
+    </div>
+
+    <div class="criteria-section">
+        <h2>Scoring System</h2>
+        <p>Questions are scored on a scale from 0-3 for each component:</p>
+        <ul>
+            <li><strong>3 (Excellent)</strong> - Meets all criteria at the highest level</li>
+            <li><strong>2 (Satisfactory)</strong> - Meets most criteria with minor issues</li>
+            <li><strong>1 (Needs Improvement)</strong> - Meets some criteria but has significant issues</li>
+            <li><strong>0 (Inadequate)</strong> - Fails to meet most criteria</li>
+        </ul>
+    </div>
+
+    <div class="criteria-section">
+        <h2>Detailed Rubric</h2>
+
+        <h3>Question Overall</h3>
+        <div class="rubric-table-container">
+            <table class="rubric-table">
+                <tr>
+                    <th>Score</th>
+                    <th>Criteria</th>
+                </tr>
+                <tr class="level-excellent">
+                    <td>3<br>(Excellent)</td>
+                    <td>
+                        <p>The question and answer choices clearly measure the knowledge and skills tested by the math
+                            topic label
+                            from either the PSAT/SAT (pages 82 to 84) or the ACT/PreACT (pages 29 to 32).</p>
+                        <p>The question is well-matched to the intended difficulty level and grade range.</p>
+                    </td>
+                </tr>
+                <tr class="level-satisfactory">
+                    <td>2<br>(Satisfactory)</td>
+                    <td>
+                        <p>The question and answer choices generally measure the knowledge and skills tested by the math
+                            topic label
+                            from either the PSAT/SAT (pages 82 to 84) or the ACT/PreACT (pages 29 to 32), but may not as
+                            clearly refer
+                            to area being tested compared to an excellent response.</p>
+                        <p>The question is clear and appropriate for the intended level and high school grade range.</p>
+                    </td>
+                </tr>
+                <tr class="level-needs-improvement">
+                    <td>1<br>(Needs Improvement)</td>
+                    <td>
+                        <p>The question and answer choices somewhat measure the knowledge and skills tested by the math
+                            topic label
+                            from either the PSAT/SAT (pages 82 to 84) or the ACT/PreACT (pages 29 to 32), but may
+                            indirectly measure
+                            these skills or include additional knowledge or skill areas.</p>
+                        <p>The question might be too easy or too difficult for the intended level and high school grade
+                            range.</p>
+                    </td>
+                </tr>
+                <tr class="level-inadequate">
+                    <td>0<br>(Inadequate)</td>
+                    <td>
+                        <p>The question and answer choices do not measure the knowledge and skills tested by the math
+                            topic label
+                            from either the PSAT/SAT (pages 82 to 84) or the ACT/PreACT (pages 29 to 32).</p>
+                        <p>It is overall not suitable for the intended difficulty level or specific topic labels
+                            available.</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Question Stem: Topic</h3>
+        <div class="rubric-table-container">
+            <table class="rubric-table">
+                <tr>
+                    <th>Score</th>
+                    <th>Criteria</th>
+                </tr>
+                <tr class="level-excellent">
+                    <td>3<br>(Excellent)</td>
+                    <td>
+                        <p>The topic of the question stem is meaningful, clearly and concisely conveys the central
+                            problem, and
+                            covers the math topic label from either the PSAT/SAT (pages 82 to 84) or the ACT/PreACT
+                            (pages 29 to 32).
+                        </p>
+                        <p>If a question stem is written with a real-world example, the central problem is clear to
+                            respondents from
+                            diverse backgrounds and utilizes math as part of its solution. It provides enough
+                            information to utilize
+                            formulas and equations as part of its solution.</p>
+                        <p>There are no unnecessary or excessive details. Important elements appear early in the
+                            question with
+                            explanations following.</p>
+                    </td>
+                </tr>
+                <tr class="level-satisfactory">
+                    <td>2<br>(Satisfactory)</td>
+                    <td>
+                        <p>The question stem is clear and generally covers the math topic label from either the PSAT/SAT
+                            (pages 82 to
+                            84) or ACT/PreACT (pages 29 to 32), but may not as clearly refer to area being tested
+                            compared to an
+                            excellent response.</p>
+                        <p>The topic of the question stem is clear but may contain minor ambiguities in the central
+                            problem.</p>
+                        <p>If a question stem is written with a real-world context, it provides enough information to
+                            utilize
+                            formulas and equations as part of its solution.</p>
+                        <p>There may be minor details that could distract from important elements and the following
+                            explanations.</p>
+                    </td>
+                </tr>
+                <tr class="level-needs-improvement">
+                    <td>1<br>(Needs Improvement)</td>
+                    <td>
+                        <p>The topic of the question stem is somewhat clear but it contains ambiguities in the central
+                            problem.</p>
+                        <p>If a question stem is written with a real-world context, it is unclear how to utilize
+                            formulas and
+                            equations as part of its solution.</p>
+                        <p>The question stem somewhat covers the math topic label from either the PSAT/SAT (pages 82 to
+                            84) or
+                            ACT/PreACT (pages 29 to 32), but may indirectly measure these skills or include additional
+                            knowledge or
+                            skill areas.</p>
+                        <p>There are unnecessary or excessive details that somewhat distract from important elements and
+                            following
+                            explanations.</p>
+                    </td>
+                </tr>
+                <tr class="level-inadequate">
+                    <td>0<br>(Inadequate)</td>
+                    <td>
+                        <p>The topic of the question stem is ambiguous and does not convey the central problem.</p>
+                        <p>If a question stem is written with a real-world context, it does not utilize formulas and
+                            equations as
+                            part of its solution.</p>
+                        <p>There are unnecessary or excessive details that distract from important elements and the
+                            following
+                            explanations.</p>
+                        <p>The question stem does not cover the math topic label from either the PSAT/SAT (pages 82 to
+                            84) or
+                            ACT/PreACT (pages 29 to 32).</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Question Stem: Vocabulary</h3>
+        <div class="rubric-table-container">
+            <table class="rubric-table">
+                <tr>
+                    <th>Score</th>
+                    <th>Criteria</th>
+                </tr>
+                <tr class="level-excellent">
+                    <td>3<br>(Excellent)</td>
+                    <td>
+                        <p>The question stem includes specific, clear, and simple language. It is a direct or incomplete
+                            statement
+                            that responses clearly address.</p>
+                        <p>The stem does not include jargon, technical, or otherwise complicated language.</p>
+                        <p>The question stem does not use language that influences the student to read the answer
+                            choices before
+                            reading and assessing the question, such as "Which of the following…".</p>
+                        <p>Note: "Which statement," "which expression," "which equation," and/or "which graph" are
+                            acceptable to use.
+                        </p>
+                        <p>If a question stem is written in a negative form, the negative word is emphasized, but
+                            double-negatives
+                            are never used.</p>
+                    </td>
+                </tr>
+                <tr class="level-satisfactory">
+                    <td>2<br>(Satisfactory)</td>
+                    <td>
+                        <p>The question stem is a direct or an incomplete statement and may include a few difficult and
+                            technical
+                            terms.</p>
+                        <p>The question stem may use language that influences the student to read the answer choices
+                            before reading
+                            and assessing the question, such as "Which of the following?"</p>
+                        <p>If a question stem is written in a negative form, the negative word may not be emphasized.
+                        </p>
+                    </td>
+                </tr>
+                <tr class="level-needs-improvement">
+                    <td>1<br>(Needs Improvement)</td>
+                    <td>
+                        <p>The question stem may be a direct or an incomplete statement, and includes some difficult,
+                            vague, and
+                            technical language.</p>
+                        <p>The question stem may use language that influences the student to read the answer choices
+                            before reading
+                            and assessing the question, such as "Which of the following?"</p>
+                        <p>If a question stem is written in a negative form, the negative word is not emphasized.</p>
+                    </td>
+                </tr>
+                <tr class="level-inadequate">
+                    <td>0<br>(Inadequate)</td>
+                    <td>
+                        <p>The question stem is indirect, incomplete, or includes difficult and technical language.</p>
+                        <p>The question stem uses language that influences the student to read the answer choices before
+                            reading and
+                            assessing the question such as "Which of the following?"</p>
+                        <p>If a question stem is written in a negative form, the negative word is not emphasized.</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <h3>Answer Choices</h3>
+        <div class="rubric-table-container">
+            <table class="rubric-table">
+                <tr>
+                    <th>Score</th>
+                    <th>Criteria</th>
+                </tr>
+                <tr class="level-excellent">
+                    <td>3<br>(Excellent)</td>
+                    <td>
+                        <p>There are at least 4 answer choices that are relevant to the question stem, utilize similar
+                            terminology,
+                            phrasing, or sentence structure as the question stem.</p>
+                        <p>Each answer choice is of similar length, complexity, specificity, and it contains only one
+                            correct answer.
+                        </p>
+                        <p>Answer choices do not overlap in meaning, do not contain any clues about the correct
+                            response, and contain
+                            plausible distractors that reflect common errors and misconceptions of students.</p>
+                    </td>
+                </tr>
+                <tr class="level-satisfactory">
+                    <td>2<br>(Satisfactory)</td>
+                    <td>
+                        <p>There are at least 4 answer choices that generally utilize similar terminology, phrasing, or
+                            sentence
+                            structure as the question stems.</p>
+                        <p>Each answer choice is generally similar in length, complexity, and specificity, and it
+                            contains only one
+                            correct answer.</p>
+                        <p>Answer choices may have some overlap in meaning, may have clues to the correct answer, and
+                            contains
+                            reasonably plausible distractors.</p>
+                    </td>
+                </tr>
+                <tr class="level-needs-improvement">
+                    <td>1<br>(Needs Improvement)</td>
+                    <td>
+                        <p>There are at least 4 answer choices that may utilize different terminology, phrasing or
+                            sentence structure
+                            as the question stems.</p>
+                        <p>Answer choice may be of a different length, complexity, and specificity, and may not contain
+                            plausible
+                            distractors.</p>
+                        <p>Some answer choices may overlap in meaning and may contain few clues.</p>
+                    </td>
+                </tr>
+                <tr class="level-inadequate">
+                    <td>0<br>(Inadequate)</td>
+                    <td>
+                        <p>There are at least 4 answer choices that utilize different terminology, phrasing or sentence
+                            structure as
+                            the question stems.</p>
+                        <p>Each answer choice is of a different length, complexity and specificity.</p>
+                        <p>Contains more than one correct answer.</p>
+                        <p>Answer choices overlap in meaning, contain clues, and implausible distractors.</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="criteria-section">
+        <h2>Examples</h2>
+
+        <h3>Excellent Question Example</h3>
+        <div class="example good-example">
+            <p><strong>Question:</strong> A right triangle has a hypotenuse of length 10 cm and one leg of length 6 cm.
+                What is the length of the other leg?</p>
+            <p><strong>Answer Choices:</strong><br>
+                A) 4 cm<br>
+                B) 8 cm<br>
+                C) 6√2 cm<br>
+                D) 8 cm²
+            </p>
+        </div>
+
+        <h3>Poor Question Example</h3>
+        <div class="example bad-example">
+            <p><strong>Question:</strong> Which of the following is the correct answer when finding the other leg of a
+                right triangle with a hypotenuse of 10 and a leg of 6?</p>
+            <p><strong>Answer Choices:</strong><br>
+                A) 4<br>
+                B) 8<br>
+                C) 16<br>
+                D) It can't be determined
+            </p>
+        </div>
+    </div>
+
+    <div class="interface-section">
+        <h2>Interface</h2>
+        <svg width="180" height="90" viewBox="0 0 180 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_1_50)">
+                <rect width="180" height="90" fill="white" />
+                <rect opacity="0.4" width="180" height="40" fill="white" />
+                <text fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12"
+                    letter-spacing="0em">
+                    <tspan x="51" y="24.3636">Skip (space)</tspan>
+                </text>
+                <path d="M40 0H0V40.4494H40V0Z" fill="#B9B9B9" />
+                <path
+                    d="M20 33.7348C27.3433 33.7348 33.36 27.6522 33.36 20.2247C33.36 17.1438 32.345 14.2197 30.5467 11.9292L11.7967 30.8899C14.0617 32.7067 16.9533 33.7348 20 33.7348ZM6.64 20.2247C6.64 23.3056 7.655 26.2298 9.45333 28.5202L28.2033 9.55955C25.9383 7.74269 23.0467 6.7146 20 6.7146C12.6567 6.7146 6.64 12.7972 6.64 20.2247ZM20 3.39775C29.2183 3.39775 36.64 10.9028 36.64 20.2247C36.64 29.5466 29.2183 37.0517 20 37.0517C10.7817 37.0517 3.36 29.5466 3.36 20.2247C3.36 10.9028 10.7817 3.39775 20 3.39775Z"
+                    fill="white" />
+                <rect y="49" width="180" height="40" fill="white" />
+                <path d="M40 49.5506H0V90H40V49.5506Z" fill="#B9B9B9" />
+                <path
+                    d="M18.36 64.7191L20.7033 67.0888L14.6883 73.1713H30.0017V56.2652H33.3617V76.4899H14.69L20.705 82.5725L18.3617 84.9421L8.36167 74.8298L18.36 64.7191Z"
+                    fill="white" />
+                <text fill="black" xml:space="preserve" style="white-space: pre" font-family="Inter" font-size="12"
+                    letter-spacing="0em">
+                    <tspan x="51" y="73.3636">Undo (backspace/delete)</tspan>
+                </text>
+            </g>
+            <defs>
+                <clipPath id="clip0_1_50">
+                    <rect width="180" height="90" fill="white" />
+                </clipPath>
+            </defs>
+        </svg>
+    </div>
+</body>
+
+</html>

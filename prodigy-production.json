@@ -1,0 +1,14 @@
+{
+    "port": 10000,
+    "host": "0.0.0.0",
+    "instructions": "recipes/universal-math-exam/instructions.html",
+    "db": "postgresql",
+    "db_settings": {
+        "postgresql": {
+            "dbname": "prodigy"
+        }
+    },
+    "feed_overlap": false,
+    "annotations_per_task": 3,
+    "global_css_dir": "css"
+}

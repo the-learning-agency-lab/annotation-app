@@ -1,0 +1,8 @@
+{
+    "host": "0.0.0.0",
+    "port": 10000,
+    "db": "sqlite",
+    "instructions": "recipes/universal-math-exam/instructions.html",
+    "global_css_dir": "css",
+    "annotations_per_task": 2
+}

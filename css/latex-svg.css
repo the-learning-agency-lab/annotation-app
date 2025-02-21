@@ -1,0 +1,10 @@
+.latex-display {
+    text-align: center;
+    margin: 1em 0;
+}
+.latex-inline {
+    display: inline-block;
+    max-height: 1.5em;
+    vertical-align: -0.48em;  /* Pull down to sit on baseline */
+    margin: 0 0.1em;
+}
