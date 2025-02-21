@@ -9,6 +9,6 @@
         }
     },
     "feed_overlap": false,
-    "annotations_per_task": 3,
+    "annotations_per_task": 2,
     "global_css_dir": "css"
 }
