@@ -1,0 +1,38 @@
+<div class="question-container">
+  <div class="header-info">
+    <div class="task-domain-container">
+      <div class="domain-info">
+        <span class="label">Domain:</span>
+        <span class="domain-text">{{ domain }}</span>
+      </div>
+      <div class="label-info">
+        <span class="label">Label:</span>
+        <span class="label-text">{{ label }}</span>
+      </div>
+      <div class="task-info">
+        <span class="label">Task:</span>
+        <span class="task-text">{{ task }}</span>
+      </div>
+    </div>
+    <div class="id-container">
+      <span class="id-text">ID: {{ idx }}</span>
+    </div>
+  </div>
+  <div class="question-stem">
+    {{ display_question|safe }}
+  </div>
+  <div class="choices-container">
+    <div class="choice {% if correct_answer == 'A' %}correct{% endif %}">
+      <span class="choice-letter">A:</span> {{ display_choice_A|safe }}
+    </div>
+    <div class="choice {% if correct_answer == 'B' %}correct{% endif %}">
+      <span class="choice-letter">B:</span> {{ display_choice_B|safe }}
+    </div>
+    <div class="choice {% if correct_answer == 'C' %}correct{% endif %}">
+      <span class="choice-letter">C:</span> {{ display_choice_C|safe }}
+    </div>
+    <div class="choice {% if correct_answer == 'D' %}correct{% endif %}">
+      <span class="choice-letter">D:</span> {{ display_choice_D|safe }}
+    </div>
+  </div>
+</div>

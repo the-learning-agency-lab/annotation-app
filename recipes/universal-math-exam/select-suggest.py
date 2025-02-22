@@ -1,17 +1,13 @@
 import base64
-
-# Import sympy for LaTeX rendering
 import re
 from io import BytesIO
 from pathlib import Path
 from typing import Optional
 
-# Import matplotlib for LaTeX rendering
 import matplotlib
 import matplotlib.pyplot as plt
+from jinja2 import DebugUndefined, Template
 from matplotlib import rcParams
-
-# Convert inline LaTeX to SVG
 from prodigy import set_hashes
 from prodigy.components.loaders import JSONL
 from prodigy.core import Arg, recipe
@@ -25,7 +21,8 @@ rcParams['mathtext.fontset'] = 'cm'  # Computer Modern font (TeX-like)
 
 def latex_to_svg_base64(latex_str):
     """
-    Convert a LaTeX string to an SVG and return as base64-encoded string using matplotlib.
+    Convert a LaTeX string to an SVG and return as base64-encoded
+    string using matplotlib.
 
     Args:
         latex_str: The LaTeX string to render
@@ -70,12 +67,14 @@ def process_latex_in_text(text):
     Uses specialized handling for inline variables vs. equations.
     Supports both types of syntax for inline equations.
     """
-    # First, temporarily replace escaped dollar signs \$ and escaped parentheses \( \) so they don't match our patterns
+    # First, temporarily replace escaped dollar signs \$ and
+    # escaped parentheses \( \) so they don't match our patterns
     text = re.sub(r'(\\\$)', r'ESCAPED_DOLLAR_PLACEHOLDER', text)
     text = re.sub(r'\\\(', r'ESCAPED_PAREN_PLACEHOLDER_1', text)
     text = re.sub(r'\\\)', r'ESCAPED_PAREN_PLACEHOLDER_2', text)
 
-    # Pattern for inline LaTeX equations with dollar signs: $...$ (but not single variables or currency)
+    # Pattern for inline LaTeX equations with dollar signs: $...$
+    # (but not single variables or currency)
     inline_dollar_pattern = r'\$([^\$]+?)\$'
 
     # Pattern for inline LaTeX equations with parentheses: \(...\)
@@ -109,41 +108,57 @@ def process_latex_in_text(text):
     return text
 
 
+# Custom HTML template for the reset button
+reset_button_html = """
+<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0px;">
+    <h2 style="margin: 0; font-weight: 600;">Revisions</h2>
+    <button
+        id="reset-revision-button"
+        style="
+            line-height: 1;
+        "
+        onclick="resetRevision()"
+    >
+        Reset Revisions
+    </button>
+</div>
+"""
+
+
 @recipe(
     "select-suggest",
     dataset=Arg(help="Dataset to save answers to"),
     inputs_path=Arg(help="Path to jsonl inputs"),
     display_template_path=Arg(
         "--display-template", "-dp", help="Template for summarizing the arguments"
-    ),
-    resume=Arg(
-        "--resume", "-r", help="Resume from the dataset, replaying the matches in them"
-    ),
-    nometa=Arg(
-        "--no-meta",
-        "-nm",
-        help="Don't display the meta information at the bottom of the card",
-    ),
+    )
 )
 def select_suggest(
     dataset,
     inputs_path: Path,
-    display_template_path: Optional[Path] = None,
-    resume: bool = False,
-    nometa: bool = False,
+    display_template_path: Optional[Path] = None
 ):
-    options = [
-        {"id": 3, "text": "😺 Fully correct"},
-        {"id": 2, "text": "😼 Partially correct"},
-        {"id": 1, "text": "😾 Wrong"},
-        {"id": 0, "text": "🙀 Don't know"},
-    ]
+
+    with display_template_path.open("r", encoding="utf8") as file_:
+        display = Template(file_.read(), undefined=DebugUndefined)
 
     def get_stream():
         for item in JSONL(inputs_path):
-            question = process_latex_in_text(item["question"])
+            # Store the original revision text to allow resetting
+            item["question_orig"] = item["question"]
+            item["choice_A_orig"] = item["choice_A"]
+            item["choice_B_orig"] = item["choice_B"]
+            item["choice_C_orig"] = item["choice_C"]
+            item["choice_D_orig"] = item["choice_D"]
 
-            yield {"html": question, "options": options}
+            item["display_question"] = process_latex_in_text(item["question"])
+            item["display_choice_A"] = process_latex_in_text(item["choice_A"])
+            item["display_choice_B"] = process_latex_in_text(item["choice_B"])
+            item["display_choice_C"] = process_latex_in_text(item["choice_C"])
+            item["display_choice_D"] = process_latex_in_text(item["choice_D"])
+            item["html"] = display.render(**item)
+
+            yield item
 
     # We can use the blocks to override certain config and content, and set
     # "text": None for the choice interface so it doesn't also render the text
@@ -182,19 +197,50 @@ def select_suggest(
             "field_suggestions": ["0", "1", "2", "3"],
         },
         {
+            "view_id": "html",
+            "html_template": reset_button_html,
+        },
+        {
             "view_id": "text_input",
-            "field_rows": 3,
-            "field_label": "Explain your decision",
+            "field_id": "question",
+            "field_rows": 6,
+            "field_label": "Question Stem:",
+        },
+        {
+            "view_id": "text_input",
+            "field_id": "choice_A",
+            "field_rows": 2,
+            "field_label": "Option A:",
+        },
+        {
+            "view_id": "text_input",
+            "field_id": "choice_B",
+            "field_rows": 2,
+            "field_label": "Option B:",
+        },
+        {
+            "view_id": "text_input",
+            "field_id": "choice_C",
+            "field_rows": 2,
+            "field_label": "Option C:",
+        },
+        {
+            "view_id": "text_input",
+            "field_id": "choice_D",
+            "field_rows": 2,
+            "field_label": "Option D:",
         },
     ]
 
+    reset_button_js = (Path(__file__).parent / "reset_button.js").read_text()
     stream = get_stream()
     stream = (set_hashes(eg) for eg in stream)
     return {
-        "dataset": dataset,  # the dataset to save annotations to
-        "view_id": "blocks",  # set the view_id to "blocks"
-        "stream": stream,  # the stream of incoming examples
+        "dataset": dataset,
+        "view_id": "blocks",
+        "stream": stream,
         "config": {
-            "blocks": blocks,  # add the blocks to the config
+            "blocks": blocks,
+            "javascript": reset_button_js,
         },
     }
