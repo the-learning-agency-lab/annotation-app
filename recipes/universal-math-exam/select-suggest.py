@@ -71,6 +71,10 @@ def process_latex_in_text(text):
     # escaped parentheses \( \) so they don't match our patterns
     text = re.sub(r'(\\\$)', r'ESCAPED_DOLLAR_PLACEHOLDER', text)
 
+    # Replace "\le" and "\ge" with their LaTeX equivalents
+    text = text.replace(r'\le', r'\leq')
+    text = text.replace(r'\ge', r'\geq')
+
     # Pattern for inline LaTeX equations with dollar signs: $...$
     # (but not single variables or currency)
     inline_dollar_pattern = r'\$([^\$]+?)\$'
