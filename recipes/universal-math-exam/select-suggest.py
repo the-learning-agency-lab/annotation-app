@@ -70,8 +70,6 @@ def process_latex_in_text(text):
     # First, temporarily replace escaped dollar signs \$ and
     # escaped parentheses \( \) so they don't match our patterns
     text = re.sub(r'(\\\$)', r'ESCAPED_DOLLAR_PLACEHOLDER', text)
-    text = re.sub(r'\\\(', r'ESCAPED_PAREN_PLACEHOLDER_1', text)
-    text = re.sub(r'\\\)', r'ESCAPED_PAREN_PLACEHOLDER_2', text)
 
     # Pattern for inline LaTeX equations with dollar signs: $...$
     # (but not single variables or currency)
@@ -81,29 +79,22 @@ def process_latex_in_text(text):
     inline_paren_pattern = r'\\\((.+?)\\\)'
 
     # Process inline LaTeX equations with dollar signs
-    def replace_inline_dollar_latex(match):
+    def replace_inline_latex(match):
         latex = match.group(1)
         svg_base64 = latex_to_svg_base64(latex)
         if svg_base64:
             return f'<img class="latex-inline" src="{svg_base64}" alt="{latex}" />'
         return match.group(0)
 
-    # Process inline LaTeX equations with parentheses
-    def replace_inline_paren_latex(match):
-        latex = match.group(2)
-        svg_base64 = latex_to_svg_base64(latex)
-        if svg_base64:
-            return f'<img class="latex-inline" src="{svg_base64}" alt="{latex}" />'
-        return match.group(0)
-
     # Apply replacements
-    text = re.sub(inline_dollar_pattern, replace_inline_dollar_latex, text)
-    text = re.sub(inline_paren_pattern, replace_inline_paren_latex, text)
+    text = re.sub(inline_dollar_pattern, replace_inline_latex, text)
+    text = re.sub(inline_paren_pattern, replace_inline_latex, text)
+
+    # Fix whitespace
+    text = text.replace(r'\n', '<br>')
 
     # Restore escaped characters
     text = text.replace('ESCAPED_DOLLAR_PLACEHOLDER', '$')
-    text = text.replace('ESCAPED_PAREN_PLACEHOLDER_1', '(')
-    text = text.replace('ESCAPED_PAREN_PLACEHOLDER_2', ')')
 
     return text
 
