@@ -4,6 +4,6 @@
     "db": "sqlite",
     "instructions": "recipes/universal-math-exam/instructions.html",
     "global_css_dir": "css",
-    "buttons": ["accept", "reject", "undo"],
+    "buttons": ["accept", "undo"],
     "annotations_per_task": 2
 }

@@ -8,7 +8,7 @@
             "dbname": "prodigy_xxio"
         }
     },
-    "buttons": ["accept", "reject", "undo"],
+    "buttons": ["accept", "undo"],
     "feed_overlap": false,
     "annotations_per_task": 2,
     "global_css_dir": "css"
