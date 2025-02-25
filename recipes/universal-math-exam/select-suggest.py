@@ -165,7 +165,7 @@ def select_suggest(
             "field_label": "Overall",
             "field_placeholder": "Score from 1 to 3",
             "field_rows": 1,
-            "field_suggestions": ["0", "1", "2", "3"],
+            "field_suggestions": ["1", "2", "3"],
         },
         {
             "view_id": "text_input",
