@@ -12,8 +12,10 @@
 .header-info {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1.5rem;
+    /* margin-bottom: 1rem; */
+    font-size: 10px;
     text-align: left;
+    white-space: normal;
 }
 
 .task-domain-container {
@@ -77,4 +79,19 @@
 .correct {
     background-color: rgba(76, 175, 80, 0.15);
     border-left: 4px solid #4CAF50;
+}
+
+.modified {
+    border-left: 4px solid #FF9800;
+    position: relative;
+}
+
+.modified::after {
+    content: '✏️';
+    /* Pencil emoji as an indicator */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1rem;
 }

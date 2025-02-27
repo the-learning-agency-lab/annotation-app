@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #1a365d;
+            margin-top: 1.5em;
+        }
+
+        .intro {
+            background-color: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #2563eb;
+            margin-bottom: 2rem;
+        }
+
+        .criteria-section {
+            margin-bottom: 2rem;
+        }
+
+        .example {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+        }
+
+        .good-example {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+        }
+
+        .bad-example {
+            background-color: #fef2f2;
+            border-left: 4px solid #ef4444;
+        }
+
+        ul {
+            padding-left: 1.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        .interface-section {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="intro">
+        <h1>Universal Math Exam Revision Adjudication</h1>
+        <p>Your task is to choose the best revision of two options.</p>
+    </div>
+
+    <div class="interface-section">
+        <h3>Math Expression Formatting</h3>
+        <ul>
+            <li>Questions use <strong>LaTeX</strong> formatting for mathematical expressions.</li>
+            <li>In-line math expressions should be surrounded by single dollar signs: <code>$expression$</code></li>
+            <li>If you need an actual dollar sign to appear in text, escape it with a backslash: <code>\$</code></li>
+            <li>Some questions may use <code>\(</code> and <code>\)</code> instead of dollar signs for math. These can (optionally) be replaced with <code>$</code> for consistency, which has the same effect.</li>
+            <li>If extensive changes to mathematical expressions are needed, please consult these resources:
+                <ul><strong>LaTeX</strong> syntax for math operations are described in this <a href="https://media.datacamp.com/legacy/image/upload/v1715079172/Marketing/Blog/LaTex_Cheat_Sheet.pdf">cheat sheet</a>.</ul>
+                <ul>Copy and paste your revised question stem and/or answer choices into this <a href="http://www.tlhiv.org/ltxpreview/">preview tool</a> to verify that they display correctly.</ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="interface-section">
+        <h3>Examples</h3>
+        <div class="example good-example">
+            <p><strong>Example 1:</strong> Simplifying a complex formula</p>
+            <p>Original: "Solve for x: $\sqrt{x^3-4x^2+7x-12} = \frac{x^2+5}{2x-3}$"</p>
+            <p>Revised: "Solve for x: $x^2 - 6x + 8 = 0$"</p>
+        </div>
+        
+        <div class="example good-example">
+            <p><strong>Example 2:</strong> Converting math delimiter formats</p>
+            <p>Original: "The solution to the equation \(x^2 - 4x + 4 = 0\) is..."</p>
+            <p>Corrected: "The solution to the equation $x^2 - 4x + 4 = 0$ is..."</p>
+        </div>
+    </div>
+</html>
