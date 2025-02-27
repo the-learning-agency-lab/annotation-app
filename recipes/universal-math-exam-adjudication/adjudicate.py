@@ -1,4 +1,5 @@
 import base64
+import random
 import re
 from io import BytesIO
 from pathlib import Path
@@ -114,6 +115,7 @@ def render_items(d):
         if d[f"{key}_orig"] != d[key]:
             modified.append(key)
 
+    orig["modified"] = modified
     revised["modified"] = modified
 
     orig["correct_answer"] = d["correct_answer"]
@@ -166,11 +168,12 @@ def select_suggest(
 
             orig, revised = render_items(item)
 
-            item["options"] = [
+            options = [
                 {"id": "orig", "html": mcq_display.render(**orig)},
                 {"id": "revised", "html": mcq_display.render(**revised)},
             ]
-
+            random.shuffle(options)
+            item["options"] = options
             yield item
 
     # We can use the blocks to override certain config and content, and set

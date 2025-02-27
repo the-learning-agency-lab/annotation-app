@@ -4,5 +4,5 @@
     "db": "sqlite",
     "instructions": "recipes/universal-math-exam-adjudication/instructions.html",
     "global_css_dir": "css",
-    "buttons": ["accept", "reject", "undo"]
+    "buttons": ["accept", "undo"]
 }
