@@ -7,9 +7,9 @@ from dotenv import load_dotenv
 load_dotenv(override=True)
 os.environ["PRODIGY_CONFIG"] = "prodigy-production.json"
 
-subprocess.run(["prodigy", "db-out", "ume", "data"])
+subprocess.run(["prodigy", "db-out", "ume-final", "data"])
 
-df = pd.read_json("data/ume.jsonl", lines=True)
+df = pd.read_json("data/ume-final.jsonl", lines=True)
 df = df.drop(
     columns=[
         "display_question",
@@ -22,4 +22,4 @@ df = df.drop(
         "_task_hash",
         ]
     )
-df.to_json("data/ume.jsonl", orient="records", lines=True)
+df.to_json("data/ume-final.jsonl", orient="records", lines=True)
