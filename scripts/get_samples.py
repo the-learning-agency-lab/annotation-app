@@ -51,7 +51,7 @@ diff_mask = (
     (df['choice_D'] != df['choice_D_orig'])
 )
 
-# Save samples for adjudication
+# Get samples for adjudication
 for_adjudication = (
     df[validation_mask & diff_mask]
     .drop(
@@ -63,6 +63,26 @@ for_adjudication = (
         ]
     )
 )
+
+
+def consolidate_revisions(group):
+    """Consolidate multiple revisions into a single row.
+    By replacing the original values with the latest revision.
+    """
+    row = group.iloc[0]
+    if len(group) > 1:
+        revision_2 = group.iloc[1]
+        row["question_orig"] = revision_2["question"]
+        row["choice_A_orig"] = revision_2["choice_A"]
+        row["choice_B_orig"] = revision_2["choice_B"]
+        row["choice_C_orig"] = revision_2["choice_C"]
+        row["choice_D_orig"] = revision_2["choice_D"]
+    return row
+
+
+for_adjudication = for_adjudication.groupby("idx").apply(consolidate_revisions)
+
+# Save samples for adjudication
 print(f"For adjudication: {len(for_adjudication)}")
 for_adjudication.to_json(
     "data/subset-1a-adjudication.jsonl",
