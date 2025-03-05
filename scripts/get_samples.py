@@ -33,15 +33,6 @@ df["topic"] = df["topic"].astype("Int64")
 df["vocabulary"] = df["vocabulary"].astype("Int64")
 df["choices"] = df["choices"].astype("Int64")
 
-# Find rows with full responses
-valid_values = [1, 2, 3]
-validation_mask = (
-    (df["overall"].isin(valid_values)) &
-    (df["topic"].isin(valid_values)) &
-    (df["vocabulary"].isin(valid_values)) &
-    (df["choices"].isin(valid_values))
-)
-
 # Create a boolean mask to find rows with any differing choices
 diff_mask = (
     (df['question'] != df['question_orig']) |
@@ -51,9 +42,18 @@ diff_mask = (
     (df['choice_D'] != df['choice_D_orig'])
 )
 
+# Find rows with positive responses
+good_values = [2, 3]
+good_mask = (
+    (df["overall"].isin(good_values)) &
+    (df["topic"].isin(good_values)) &
+    (df["vocabulary"].isin(good_values)) &
+    (df["choices"].isin(good_values))
+)
+
 # Get samples for adjudication
 for_adjudication = (
-    df[validation_mask & diff_mask]
+    df[good_mask & diff_mask]
     .drop(
         columns=[
             "_timestamp",
@@ -88,6 +88,15 @@ for_adjudication.to_json(
     "data/subset-1a-adjudication.jsonl",
     orient="records",
     lines=True
+)
+
+# Find rows with full responses
+valid_values = [1, 2, 3]
+validation_mask = (
+    (df["overall"].isin(valid_values)) &
+    (df["topic"].isin(valid_values)) &
+    (df["vocabulary"].isin(valid_values)) &
+    (df["choices"].isin(valid_values))
 )
 
 # Save samples with incomplete responses
