@@ -230,9 +230,20 @@ def select_suggest(
     reset_button_js = (Path(__file__).parent / "reset_button.js").read_text()
     stream = get_stream()
     stream = (set_hashes(eg) for eg in stream)
+
+    def validate_answer(eg):
+        required_fields = ["overall", "topic", "vocabulary", "choices"]
+        errors = []
+        for field in required_fields:
+            if eg.get(field) not in ["1", "2", "3"]:
+                errors.append(f"Please provide a valid score for '{field}'")
+        if errors:
+            raise ValueError("\n".join(errors))
+
     return {
         "dataset": dataset,
         "view_id": "blocks",
+        "validate_answer": validate_answer,
         "stream": stream,
         "config": {
             "blocks": blocks,
