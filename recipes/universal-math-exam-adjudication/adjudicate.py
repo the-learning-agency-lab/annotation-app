@@ -3,7 +3,6 @@ import random
 import re
 from io import BytesIO
 from pathlib import Path
-from typing import Optional
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -128,39 +127,18 @@ def render_items(d):
     "adjudicate",
     dataset=Arg(help="Dataset to save answers to"),
     inputs_path=Arg(help="Path to jsonl inputs"),
-    display_template_path=Arg(
-        "--display-template", "-dp", help="Template for summarizing the arguments"
-    )
 )
 def select_suggest(
     dataset,
     inputs_path: Path,
-    display_template_path: Optional[Path] = None
 ):
+    mcq_template_path = Path(__file__).parent / "mcq.jinja2"
+    with mcq_template_path.open("r", encoding="utf8") as file_:
+        mcq_template = Template(file_.read(), undefined=DebugUndefined)
 
-    with display_template_path.open("r", encoding="utf8") as file_:
-        mcq_display = Template(file_.read(), undefined=DebugUndefined)
-
-    info_template = Template("""
-<div class="header-info">
-    <div class="task-domain-container">
-        <div class="domain-info">
-            <span class="label">Domain:</span>
-            <span class="domain-text">{{ domain }}</span>
-        </div>
-        <div class="label-info">
-            <span class="label">Label:</span>
-            <span class="label-text">{{ label }}</span>
-        </div>
-        <div class="task-info">
-            <span class="label">Task:</span>
-            <span class="task-text">{{ task }}</span>
-        </div>
-    </div>
-    <div class="id-container">
-        <span class="id-text">ID: {{ idx }}</span>
-    </div>
-</div>""")
+    info_template_path = Path(__file__).parent / "mcq-info.jinja2"
+    with info_template_path.open("r", encoding="utf8") as file_:
+        info_template = Template(file_.read(), undefined=DebugUndefined)
 
     def get_stream():
         for item in JSONL(inputs_path):
@@ -169,8 +147,8 @@ def select_suggest(
             orig, revised = render_items(item)
 
             options = [
-                {"id": "orig", "html": mcq_display.render(**orig)},
-                {"id": "revised", "html": mcq_display.render(**revised)},
+                {"id": "orig", "html": mcq_template.render(**orig)},
+                {"id": "revised", "html": mcq_template.render(**revised)},
             ]
             random.shuffle(options)
             item["options"] = options
@@ -185,9 +163,15 @@ def select_suggest(
 
     stream = get_stream()
     stream = (set_hashes(eg) for eg in stream)
+
+    def validate_answer(eg):
+        if len(eg.get("accept")) == 0:
+            raise ValueError("Please select an answer.")
+
     return {
         "dataset": dataset,
         "view_id": "blocks",
+        "validate_answer": validate_answer,
         "stream": stream,
         "config": {
             "blocks": blocks,

@@ -6,7 +6,7 @@ services:
     plan: starter
     branch: main
     buildCommand: ./setup.sh
-    startCommand: prodigy adjudicate ume-adjudicate inputs/ume/ -F recipes/universal-math-exam-adjudication/adjudicate.py -dp recipes/universal-math-exam-adjudication/mcq.jinja2
+    startCommand: prodigy adjudicate ume-adjudicate inputs/ume/subset-1a-adjudication.jsonl -F recipes/universal-math-exam-adjudication/adjudicate.py
     envVars:
       - key: PRODIGY_KEY
         sync: false      
