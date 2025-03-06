@@ -54,14 +54,21 @@ diff_mask = (
 )
 
 
-def filter_bad_scores(group):
-    """Filter out rows with bad scores."""
-    return (
+def filter_high_agreement_scores(group):
+    """Filter out rows with high agreement."""
+    all_greater_than_one = (
         (all(group["overall"] > 1)) &
         (all(group["topic"] > 1)) &
         (all(group["vocabulary"] > 1)) &
         (all(group["choices"] > 1))
     )
+    not_all_three = (
+        (not all(group["overall"] == 3)) &
+        (not all(group["topic"] == 3)) &
+        (not all(group["vocabulary"] == 3)) &
+        (not all(group["choices"] == 3))
+    )
+    return all_greater_than_one and not_all_three
 
 
 def consolidate_revisions(group):
@@ -90,7 +97,7 @@ for_adjudication = (
         ]
     )
     .groupby("idx")
-    .filter(filter_bad_scores)
+    .filter(filter_high_agreement_scores)
     .groupby("idx")
     .apply(consolidate_revisions, include_groups=False)
 )
