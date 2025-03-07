@@ -6,7 +6,7 @@ services:
     plan: starter
     branch: main
     buildCommand: ./setup.sh
-    startCommand: prodigy select-suggest ume-final inputs/ume-rating/ -F recipes/universal-math-exam/select-suggest.py
+    startCommand: prodigy select-suggest ume2 inputs/ume-rating/ -F recipes/universal-math-exam/select-suggest.py
     envVars:
       - key: PRODIGY_KEY
         sync: false      
