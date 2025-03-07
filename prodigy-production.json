@@ -21,5 +21,6 @@
     "feed_overlap": false,
     "annotations_per_task": 2,
     "global_css_dir": "css",
-    "exclude_by": "input"
+    "exclude_by": "input",
+    "allow_work_stealing": true
 }
