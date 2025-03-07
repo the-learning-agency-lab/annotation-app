@@ -7,14 +7,17 @@ from dotenv import load_dotenv
 load_dotenv(override=True)
 os.environ["PRODIGY_CONFIG"] = "prodigy-production.json"
 
+# Download subset 1 annotations
 subprocess.run(["prodigy", "db-out", "ume-final", "data"])
 
-subset_1 = pd.read_csv("data/subset-1.csv")
-
+# Load subset 1 annotations
 df = pd.read_json(
     "data/ume-final.jsonl",
     lines=True,
 )
+
+# Read in subset 1 items
+subset_1 = pd.read_csv("data/subset-1.csv")
 
 # Drop unneeded columns
 df = df.drop(
@@ -26,6 +29,9 @@ df = df.drop(
         "display_choice_D",
         "html",
         "_input_hash",
+        "_task_hash",
+        "_session_id",
+        "_view_id",
     ]
 )
 
@@ -63,8 +69,6 @@ for_completion_idx = (
         columns=[
             "_timestamp",
             "_annotator_id",
-            "_session_id",
-            "_view_id",
         ]
     )
     ["idx"]
@@ -80,7 +84,7 @@ for_completion.to_json(
 )
 
 
-# Create a boolean mask to find rows with any differing choices
+# Create a boolean mask to find rows with any differing revisions
 diff_mask = (
     (df['question'] != df['question_orig']) |
     (df['choice_A'] != df['choice_A_orig']) |
@@ -143,8 +147,6 @@ for_adjudication = (
         columns=[
             "_timestamp",
             "_annotator_id",
-            "_session_id",
-            "_view_id",
         ]
     )
     .groupby("idx")
