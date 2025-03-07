@@ -3,7 +3,7 @@ from pathlib import Path
 import pandas as pd
 
 input_file = Path('data/subset-1.csv')
-output_file = Path('inputs') / 'ume' / input_file.with_suffix('.jsonl').name
+output_file = Path('inputs') / 'ume-rating' / input_file.with_suffix('.jsonl').name
 df = pd.read_csv(input_file)
 
 # Shuffle the data

@@ -129,7 +129,7 @@ def select_suggest(
     def get_stream():
         json_lines = []
         for input_path in list(inputs_path.glob("*.jsonl")):
-            json_lines.extent(list(JSONL(input_path)))
+            json_lines.extend(list(JSONL(input_path)))
 
         for item in json_lines:
             # Store the original revision text to allow resetting
@@ -222,7 +222,13 @@ def select_suggest(
 
     reset_button_js = (Path(__file__).parent / "reset_button.js").read_text()
     stream = get_stream()
-    stream = (set_hashes(eg) for eg in stream)
+    stream = [set_hashes(eg, input_keys=["idx"]) for eg in stream]
+
+    print("Length of stream: ", len(stream))
+    print(
+        "Unique input hashes in stream: ",
+        len(set([eg["_input_hash"] for eg in stream]))
+    )
 
     def validate_answer(eg):
         required_fields = ["overall", "topic", "vocabulary", "choices"]

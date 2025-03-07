@@ -2,16 +2,24 @@
     "port": 10000,
     "host": "0.0.0.0",
     "instructions": "recipes/universal-math-exam/instructions.html",
-    "project_info": ["dataset", "session", "lang", "recipe_name"],
+    "project_info": [
+        "dataset",
+        "session",
+        "lang",
+        "recipe_name"
+    ],
     "db": "postgresql",
     "db_settings": {
         "postgresql": {
             "dbname": "prodigy_xxio"
         }
     },
-    "buttons": ["accept", "undo"],
+    "buttons": [
+        "accept",
+        "undo"
+    ],
     "feed_overlap": false,
     "annotations_per_task": 2,
     "global_css_dir": "css",
-    "allow_work_stealing": true
+    "exclude_by": "input"
 }

@@ -9,11 +9,14 @@ os.environ["PRODIGY_CONFIG"] = "prodigy-production.json"
 
 subprocess.run(["prodigy", "db-out", "ume-final", "data"])
 
+subset_1 = pd.read_csv("data/subset-1.csv")
+
 df = pd.read_json(
     "data/ume-final.jsonl",
     lines=True,
 )
 
+# Drop unneeded columns
 df = df.drop(
     columns=[
         "display_question",
@@ -33,16 +36,49 @@ df["topic"] = df["topic"].astype("Int64")
 df["vocabulary"] = df["vocabulary"].astype("Int64")
 df["choices"] = df["choices"].astype("Int64")
 
-# Find rows with full responses
-valid_values = [1, 2, 3]
-validation_mask = (
-    (df["overall"].isin(valid_values)) &
-    (df["topic"].isin(valid_values)) &
-    (df["vocabulary"].isin(valid_values)) &
-    (df["choices"].isin(valid_values))
+
+# Filter samples with less than two complete responses from different annotators
+def filter_incomplete_responses(group):
+    """Filter out rows with less than two complete responses from
+    different annotators."""
+    valid_values = [1, 2, 3]
+    valid_group = group[
+        group["overall"].isin(valid_values) &
+        group["topic"].isin(valid_values) &
+        group["vocabulary"].isin(valid_values) &
+        group["choices"].isin(valid_values)
+    ]
+
+    if valid_group["_annotator_id"].nunique() >= 2:
+        return False
+
+    return True
+
+
+for_completion_idx = (
+    df
+    .groupby("idx")
+    .filter(filter_incomplete_responses)
+    .drop(
+        columns=[
+            "_timestamp",
+            "_annotator_id",
+            "_session_id",
+            "_view_id",
+        ]
+    )
+    ["idx"]
+    .unique()
 )
 
-print(f"Valid annotations: {validation_mask.sum()}")
+print(f"For completion: {len(for_completion_idx)}")
+for_completion = subset_1[subset_1["idx"].isin(for_completion_idx)]
+for_completion.to_json(
+    "inputs/ume-rating/subset-1b.jsonl",
+    orient="records",
+    lines=True
+)
+
 
 # Create a boolean mask to find rows with any differing choices
 diff_mask = (
@@ -53,9 +89,22 @@ diff_mask = (
     (df['choice_D'] != df['choice_D_orig'])
 )
 
+# 259 annotations with revisions
+print(f"Annotations with revisions: {diff_mask.sum()}")
+# 154 items with revisions
+print(f"Items with revisions: {df[diff_mask].idx.nunique()}")
+
 
 def filter_high_agreement_scores(group):
     """Filter out rows with high agreement."""
+    group = group[
+        group["overall"].notna() &
+        group["topic"].notna() &
+        group["vocabulary"].notna() &
+        group["choices"].notna()
+    ]
+    if len(group) > 2:
+        group = group.sort_values("_timestamp", ascending=True).head(2)
     all_greater_than_one = (
         (all(group["overall"] > 1)) &
         (all(group["topic"] > 1)) &
@@ -87,7 +136,9 @@ def consolidate_revisions(group):
 
 
 for_adjudication = (
-    df[validation_mask & diff_mask]
+    df[~df.index.isin(for_completion_idx) & diff_mask]
+    .groupby("idx")
+    .filter(filter_high_agreement_scores)
     .drop(
         columns=[
             "_timestamp",
@@ -96,8 +147,6 @@ for_adjudication = (
             "_view_id",
         ]
     )
-    .groupby("idx")
-    .filter(filter_high_agreement_scores)
     .groupby("idx")
     .apply(consolidate_revisions, include_groups=False)
 )
@@ -105,27 +154,7 @@ for_adjudication = (
 # Save samples for adjudication
 print(f"For adjudication: {len(for_adjudication)}")
 for_adjudication.to_json(
-    "ume-adjudication/subset-1a.jsonl",
-    orient="records",
-    lines=True
-)
-
-# Save samples with incomplete responses
-for_completion = (
-    df[~validation_mask]
-    .drop(
-        columns=[
-            "_timestamp",
-            "_annotator_id",
-            "_session_id",
-            "_view_id",
-        ]
-    )
-)
-
-print(f"For completion: {len(for_completion)}")
-for_completion.to_json(
-    "inputs/ume-rating-redo/subset-1b.jsonl",
+    "inputs/ume-adjudication/subset-1a.jsonl",
     orient="records",
     lines=True
 )
