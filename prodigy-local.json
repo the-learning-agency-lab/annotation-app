@@ -2,7 +2,7 @@
     "host": "0.0.0.0",
     "port": 10000,
     "db": "sqlite",
-    "instructions": "recipes/universal-math-exam/instructions.html",
+    "instructions": "recipes/universal-math-exam-adjudication/instructions.html",
     "global_css_dir": "css",
     "buttons": ["accept", "undo"],
     "annotations_per_task": 2,

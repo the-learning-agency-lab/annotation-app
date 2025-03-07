@@ -2,7 +2,6 @@ import base64
 import re
 from io import BytesIO
 from pathlib import Path
-from typing import Optional
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -13,10 +12,10 @@ from prodigy.components.loaders import JSONL
 from prodigy.core import Arg, recipe
 
 # Configure matplotlib for LaTeX rendering
-matplotlib.use('Agg')  # Use non-interactive backend
-rcParams['text.usetex'] = False
-rcParams['text.latex.preamble'] = r'\usepackage{amsmath,amssymb,amsfonts}'
-rcParams['mathtext.fontset'] = 'cm'  # Computer Modern font (TeX-like)
+matplotlib.use("Agg")  # Use non-interactive backend
+rcParams["text.usetex"] = False
+rcParams["text.latex.preamble"] = r"\usepackage{amsmath,amssymb,amsfonts}"
+rcParams["mathtext.fontset"] = "cm"  # Computer Modern font (TeX-like)
 
 
 def latex_to_svg_base64(latex_str):
@@ -38,24 +37,30 @@ def latex_to_svg_base64(latex_str):
         # Eliminate all margins
         plt.subplots_adjust(0, 0, 1, 1)
         ax = fig.add_subplot(111)
-        ax.axis('off')
+        ax.axis("off")
 
         # For equations, ensure proper math formatting
-        ax.text(0.5, 0.5, f"${latex_str}$",
-                size=fontsize,
-                ha='center', va='center',
-                transform=ax.transAxes)
+        ax.text(
+            0.5,
+            0.5,
+            f"${latex_str}$",
+            size=fontsize,
+            ha="center",
+            va="center",
+            transform=ax.transAxes,
+        )
 
         # Tightest possible bbox with minimal padding
         buffer = BytesIO()
-        plt.savefig(buffer, format='svg', bbox_inches='tight',
-                    pad_inches=0.01, transparent=True)
+        plt.savefig(
+            buffer, format="svg", bbox_inches="tight", pad_inches=0.01, transparent=True
+        )
         plt.close(fig)
 
         # Convert to base64
         buffer.seek(0)
-        svg_base64 = base64.b64encode(buffer.read()).decode('utf-8')
-        return f'data:image/svg+xml;base64,{svg_base64}'
+        svg_base64 = base64.b64encode(buffer.read()).decode("utf-8")
+        return f"data:image/svg+xml;base64,{svg_base64}"
     except Exception as e:
         print(f"Error rendering LaTeX: {latex_str} - {str(e)}")
         return None
@@ -69,18 +74,18 @@ def process_latex_in_text(text):
     """
     # First, temporarily replace escaped dollar signs \$ and
     # escaped parentheses \( \) so they don't match our patterns
-    text = re.sub(r'(\\\$)', r'ESCAPED_DOLLAR_PLACEHOLDER', text)
+    text = re.sub(r"(\\\$)", r"ESCAPED_DOLLAR_PLACEHOLDER", text)
 
     # Replace "\le" and "\ge" with their LaTeX equivalents
-    text = text.replace(r'\le', r'\leq')
-    text = text.replace(r'\ge', r'\geq')
+    text = text.replace(r"\le", r"\leq")
+    text = text.replace(r"\ge", r"\geq")
 
     # Pattern for inline LaTeX equations with dollar signs: $...$
     # (but not single variables or currency)
-    inline_dollar_pattern = r'\$([^\$]+?)\$'
+    inline_dollar_pattern = r"\$([^\$]+?)\$"
 
     # Pattern for inline LaTeX equations with parentheses: \(...\)
-    inline_paren_pattern = r'\\\((.+?)\\\)'
+    inline_paren_pattern = r"\\\((.+?)\\\)"
 
     # Process inline LaTeX equations with dollar signs
     def replace_inline_latex(match):
@@ -95,50 +100,38 @@ def process_latex_in_text(text):
     text = re.sub(inline_paren_pattern, replace_inline_latex, text)
 
     # Fix whitespace
-    text = text.replace(r'\n', '<br>')
+    text = text.replace(r"\n", "<br>")
 
     # Restore escaped characters
-    text = text.replace('ESCAPED_DOLLAR_PLACEHOLDER', '$')
+    text = text.replace("ESCAPED_DOLLAR_PLACEHOLDER", "$")
 
     return text
-
-
-# Custom HTML template for the reset button
-reset_button_html = """
-<div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0px;">
-    <h2 style="margin: 0; font-weight: 600;">Revisions</h2>
-    <button
-        id="reset-revision-button"
-        style="
-            line-height: 1;
-        "
-        onclick="resetRevision()"
-    >
-        Reset Revisions
-    </button>
-</div>
-"""
 
 
 @recipe(
     "select-suggest",
     dataset=Arg(help="Dataset to save answers to"),
     inputs_path=Arg(help="Path to jsonl inputs"),
-    display_template_path=Arg(
-        "--display-template", "-dp", help="Template for summarizing the arguments"
-    )
 )
 def select_suggest(
     dataset,
     inputs_path: Path,
-    display_template_path: Optional[Path] = None
 ):
 
-    with display_template_path.open("r", encoding="utf8") as file_:
-        display = Template(file_.read(), undefined=DebugUndefined)
+    mcq_template_path = Path(__file__).parent / "mcq.jinja2"
+    with mcq_template_path.open("r", encoding="utf8") as file_:
+        mcq_template = Template(file_.read(), undefined=DebugUndefined)
+
+    reset_button_html_path = Path(__file__).parent / "reset_button.html"
+    with reset_button_html_path.open("r", encoding="utf8") as file_:
+        reset_button_html = file_.read()
 
     def get_stream():
-        for item in JSONL(inputs_path):
+        json_lines = []
+        for input_path in list(inputs_path.glob("*.jsonl")):
+            json_lines.extent(list(JSONL(input_path)))
+
+        for item in json_lines:
             # Store the original revision text to allow resetting
             item["question_orig"] = item["question"]
             item["choice_A_orig"] = item["choice_A"]
@@ -151,7 +144,7 @@ def select_suggest(
             item["display_choice_B"] = process_latex_in_text(item["choice_B"])
             item["display_choice_C"] = process_latex_in_text(item["choice_C"])
             item["display_choice_D"] = process_latex_in_text(item["choice_D"])
-            item["html"] = display.render(**item)
+            item["html"] = mcq_template.render(**item)
 
             yield item
 
