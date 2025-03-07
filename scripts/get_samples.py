@@ -105,7 +105,7 @@ for_adjudication = (
 # Save samples for adjudication
 print(f"For adjudication: {len(for_adjudication)}")
 for_adjudication.to_json(
-    "data/subset-1a-adjudication.jsonl",
+    "ume-adjudication/subset-1a.jsonl",
     orient="records",
     lines=True
 )
@@ -125,7 +125,7 @@ for_completion = (
 
 print(f"For completion: {len(for_completion)}")
 for_completion.to_json(
-    "inputs/ume/subset-1b.jsonl",
+    "inputs/ume-rating-redo/subset-1b.jsonl",
     orient="records",
     lines=True
 )
