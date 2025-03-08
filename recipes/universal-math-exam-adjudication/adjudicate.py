@@ -106,21 +106,18 @@ def process_latex(text):
 def render_items(d):
     keys = ["question", "choice_A", "choice_B", "choice_C", "choice_D"]
     modified = []  # List of items that differ between versions
-    orig = {}
-    revised = {}
+    ab = ["a", "b"]
+    random.shuffle(ab)
+
     for key in keys:
-        orig[f"display_{key}"] = process_latex(d[f"{key}_orig"])
-        revised[f"display_{key}"] = process_latex(d[key])
+        d[f"{ab[0]}_{key}"] = process_latex(d[f"{key}_orig"])
+        d[f"{ab[1]}_{key}"] = process_latex(d[key])
         if d[f"{key}_orig"] != d[key]:
             modified.append(key)
 
-    orig["modified"] = modified
-    revised["modified"] = modified
+    d["modified"] = modified
 
-    orig["correct_answer"] = d["correct_answer"]
-    revised["correct_answer"] = d["correct_answer"]
-
-    return orig, revised
+    return d
 
 
 @recipe(
@@ -128,7 +125,7 @@ def render_items(d):
     dataset=Arg(help="Dataset to save answers to"),
     inputs_path=Arg(help="Path to jsonl inputs"),
 )
-def select_suggest(
+def adjudicate(
     dataset,
     inputs_path: Path,
 ):
@@ -136,42 +133,59 @@ def select_suggest(
     with mcq_template_path.open("r", encoding="utf8") as file_:
         mcq_template = Template(file_.read(), undefined=DebugUndefined)
 
-    info_template_path = Path(__file__).parent / "mcq-info.jinja2"
-    with info_template_path.open("r", encoding="utf8") as file_:
-        info_template = Template(file_.read(), undefined=DebugUndefined)
-
     def get_stream():
         for item in JSONL(inputs_path):
-            item["html"] = info_template.render(**item)
+            item = render_items(item)
+            item["html"] = mcq_template.render(**item)
 
-            orig, revised = render_items(item)
-
-            options = [
-                {"id": "orig", "html": mcq_template.render(**orig)},
-                {"id": "revised", "html": mcq_template.render(**revised)},
-            ]
-            random.shuffle(options)
-            item["options"] = options
             yield item
 
-    # We can use the blocks to override certain config and content, and set
-    # "text": None for the choice interface so it doesn't also render the text
     blocks = [
-        {"view_id": "choice", "text": None, "label": None},
-        {"view_id": "text_input", "field_rows": 3, "field_label": "Notes:"},
+        {"view_id": "html"},
+        {
+            "view_id": "text_input",
+            "field_id": "question",
+            "field_rows": 6,
+            "field_label": "Question Stem:",
+        },
+        {
+            "view_id": "text_input",
+            "field_id": "choice_A",
+            "field_rows": 2,
+            "field_label": "Option A:",
+        },
+        {
+            "view_id": "text_input",
+            "field_id": "choice_B",
+            "field_rows": 2,
+            "field_label": "Option B:",
+        },
+        {
+            "view_id": "text_input",
+            "field_id": "choice_C",
+            "field_rows": 2,
+            "field_label": "Option C:",
+        },
+        {
+            "view_id": "text_input",
+            "field_id": "choice_D",
+            "field_rows": 2,
+            "field_label": "Option D:",
+        },
     ]
 
     stream = get_stream()
-    stream = (set_hashes(eg) for eg in stream)
+    stream = [set_hashes(eg, input_keys=["idx"]) for eg in stream]
 
-    def validate_answer(eg):
-        if len(eg.get("accept")) == 0:
-            raise ValueError("Please select an answer.")
+    print("Length of stream: ", len(stream))
+    print(
+        "Unique input hashes in stream: ",
+        len(set([eg["_input_hash"] for eg in stream]))
+    )
 
     return {
         "dataset": dataset,
         "view_id": "blocks",
-        "validate_answer": validate_answer,
         "stream": stream,
         "config": {
             "blocks": blocks,

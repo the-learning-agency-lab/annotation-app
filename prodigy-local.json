@@ -4,7 +4,13 @@
     "db": "sqlite",
     "instructions": "recipes/universal-math-exam-adjudication/instructions.html",
     "global_css_dir": "css",
-    "buttons": ["accept", "undo"],
-    "annotations_per_task": 2,
-    "allow_work_stealing": true
+    "buttons": [
+        "accept",
+        "undo"
+    ],
+    "annotations_per_task": 1,
+    "exclude_by": "input",
+    "custom_theme": {
+        "cardMaxWidth": "65%"
+    }
 }

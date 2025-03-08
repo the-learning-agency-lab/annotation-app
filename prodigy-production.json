@@ -19,8 +19,10 @@
         "undo"
     ],
     "feed_overlap": false,
-    "annotations_per_task": 2,
+    "annotations_per_task": 1,
     "global_css_dir": "css",
     "exclude_by": "input",
-    "allow_work_stealing": true
+    "custom_theme": {
+        "cardMaxWidth": "65%"
+    }
 }

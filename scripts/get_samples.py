@@ -151,6 +151,7 @@ for_adjudication = (
     )
     .groupby("idx")
     .apply(consolidate_revisions, include_groups=False)
+    .reset_index()  # Get the idx back as a column
 )
 
 # Save samples for adjudication
