@@ -98,16 +98,53 @@
 <body>
     <div class="intro">
         <h1>Universal Math Exam Multiple-Choice Adjudication</h1>
-        <p>Multiple-Choice items have been revised by a team of annotators. Your task is to choose which version of the item is higher quality. Please refer to our rubric, reproduced below.</p>
+        <p>Multiple-Choice items have been revised by a team of annotators. Your task is to read two versions of the
+            item and then type out a finalized version of the item.</p>
+        <p>You have discretion to incorporate feedback from annotators or ignore it, but the item you input should be
+            final and free of comments or notes. Please refer to our rubric, reproduced below.</p>
+    </div>
+    <div class="interface-section">
+        <h3>Math Expression Formatting</h3>
+        <ul>
+            <li>Questions use <strong>LaTeX</strong> formatting for mathematical expressions.</li>
+            <li>In-line math expressions should be surrounded by single dollar signs: <code>$expression$</code></li>
+            <li>If you need an actual dollar sign to appear in text, escape it with a backslash: <code>\$</code></li>
+            <li>Some questions may use <code>\(</code> and <code>\)</code> instead of dollar signs for math. These can
+                (optionally) be replaced with <code>$</code> for consistency, which has the same effect.</li>
+            <li>If extensive changes to mathematical expressions are needed, please consult these resources:
+                <ul><strong>LaTeX</strong> syntax for math operations are described in this <a
+                        href="https://media.datacamp.com/legacy/image/upload/v1715079172/Marketing/Blog/LaTex_Cheat_Sheet.pdf">cheat
+                        sheet</a>.</ul>
+                <ul>Copy and paste your revised question stem and/or answer choices into this <a
+                        href="http://www.tlhiv.org/ltxpreview/">preview tool</a> to verify that they display correctly.
+                </ul>
+            </li>
+        </ul>
     </div>
 
+    <div class="interface-section">
+        <h3>Examples</h3>
+        <div class="example good-example">
+            <p><strong>Example 1:</strong> Simplifying a complex formula</p>
+            <p>Original: "Solve for x: $\sqrt{x^3-4x^2+7x-12} = \frac{x^2+5}{2x-3}$"</p>
+            <p>Revised: "Solve for x: $x^2 - 6x + 8 = 0$"</p>
+        </div>
+
+        <div class="example good-example">
+            <p><strong>Example 2:</strong> Converting math delimiter formats</p>
+            <p>Original: "The solution to the equation \(x^2 - 4x + 4 = 0\) is..."</p>
+            <p>Corrected: "The solution to the equation $x^2 - 4x + 4 = 0$ is..."</p>
+        </div>
+    </div>
     <div class="criteria-section">
         <h2>Evaluation Components</h2>
         <p>Each multiple-choice question is evaluated on three key components:</p>
         <ul>
             <li><strong>Question Overall</strong> - Alignment with topic labels and appropriate difficulty level</li>
-            <li><strong>Question Stem: Topic</strong> - Relevance of the central problem to the stated domain, label, and task</li>
-            <li><strong>Question Stem: Vocabulary</strong> - Clarity of language and proper structuring of the question</li>
+            <li><strong>Question Stem: Topic</strong> - Relevance of the central problem to the stated domain, label,
+                and task</li>
+            <li><strong>Question Stem: Vocabulary</strong> - Clarity of language and proper structuring of the question
+            </li>
             <li><strong>Answer Choices</strong> - Quality and effectiveness of response options</li>
         </ul>
     </div>
@@ -166,8 +203,9 @@
                             problem, and covers the math topic label from either the PSAT/SAT or the ACT/PreACT.
                         </p>
                         <p>If a question stem is written with a real-world example, the central problem is clear to
-                            respondents from  diverse backgrounds and utilizes math as part of its solution.
-                            It provides enough information to utilize formulas and equations as part of its solution.</p>
+                            respondents from diverse backgrounds and utilizes math as part of its solution.
+                            It provides enough information to utilize formulas and equations as part of its solution.
+                        </p>
                         <p>There are no unnecessary or excessive details. Important elements appear early in the
                             question with explanations following.</p>
                     </td>
@@ -175,7 +213,7 @@
                 <tr class="level-satisfactory">
                     <td>2<br>(Satisfactory)</td>
                     <td>
-                        <p>The question stem is clear and generally covers the math topic label from either the PSAT/SAT 
+                        <p>The question stem is clear and generally covers the math topic label from either the PSAT/SAT
                             or ACT/PreACT, but may not as clearly refer to area being tested
                             compared to an excellent response.</p>
                         <p>The topic of the question stem is clear but may contain minor ambiguities in the central
@@ -189,12 +227,15 @@
                 <tr class="level-needs-improvement">
                     <td>1<br>(Needs Improvement)</td>
                     <td>
-                        <p>The topic of the question stem is somewhat clear but it contains ambiguities in the central problem.</p>
+                        <p>The topic of the question stem is somewhat clear but it contains ambiguities in the central
+                            problem.</p>
                         <p>If a question stem is written with a real-world context, it is unclear how to utilize
                             formulas and equations as part of its solution.</p>
-                        <p>The question stem somewhat covers the math topic label from either the PSAT/SAT or ACT/PreACT, 
+                        <p>The question stem somewhat covers the math topic label from either the PSAT/SAT or
+                            ACT/PreACT,
                             but may indirectly measure these skills or include additional knowledge or skill areas.</p>
-                        <p>There are unnecessary or excessive details that somewhat distract from important elements and following explanations.</p>
+                        <p>There are unnecessary or excessive details that somewhat distract from important elements and
+                            following explanations.</p>
                     </td>
                 </tr>
             </table>
@@ -289,4 +330,5 @@
             </table>
         </div>
     </div>
+
 </html>
