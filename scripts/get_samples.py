@@ -7,17 +7,23 @@ from dotenv import load_dotenv
 load_dotenv(override=True)
 os.environ["PRODIGY_CONFIG"] = "prodigy-production.json"
 
-# Download subset 1 annotations
-# subprocess.run(["prodigy", "db-out", "ume-final", "data"])
+dataset_names = ["ume-final", "ume2"]
 
-# Load subset 1 annotations
-df = pd.read_json(
-    "data/ume-final.jsonl",
-    lines=True,
-)
+dfs = []
+for name in dataset_names:
+    # Get data from Prodigy
+    # subprocess.run(["prodigy", "db-out", name, "data"])
 
-# Read in subset 1 items
-subset_1 = pd.read_csv("data/subset-1.csv")
+    # Load data
+    dfs.append(pd.read_json(f"data/{name}.jsonl", lines=True))
+
+df = pd.concat(dfs)
+
+# Read in all items
+all_items = pd.read_csv("data/ume-full-item-set.csv")
+
+# Already adjudicated (outside of Prodigy)
+already_adjudicated = pd.read_csv("data/Mar6data_ToAdjudicate.csv")
 
 # Drop unneeded columns
 df = df.drop(
@@ -37,13 +43,12 @@ df = df.drop(
 
 # Convert dtypes
 df = df.replace("", pd.NA)
-df["overall"] = df["overall"].astype("Int64")
-df["topic"] = df["topic"].astype("Int64")
-df["vocabulary"] = df["vocabulary"].astype("Int64")
-df["choices"] = df["choices"].astype("Int64")
+df["overall"] = pd.to_numeric(df["overall"], errors="coerce")
+df["topic"] = pd.to_numeric(df["topic"], errors="coerce")
+df["vocabulary"] = pd.to_numeric(df["vocabulary"], errors="coerce")
+df["choices"] = pd.to_numeric(df["choices"], errors="coerce")
 
 
-# Filter samples with less than two complete responses from different annotators
 def filter_incomplete_responses(group):
     """Filter out rows with less than two complete responses from
     different annotators."""
@@ -74,9 +79,9 @@ for_completion_idx = (
 )
 
 print(f"For completion: {len(for_completion_idx)}")
-for_completion = subset_1[subset_1["idx"].isin(for_completion_idx)]
+for_completion = all_items[all_items["idx"].isin(for_completion_idx)]
 for_completion.to_json(
-    "inputs/ume-rating/subset-1b.jsonl", orient="records", lines=True
+    "inputs/ume-rating/subset-2b.jsonl", orient="records", lines=True
 )
 
 
@@ -127,7 +132,10 @@ def consolidate_revisions(group):
 
 
 for_adjudication = (
-    df[~df["idx"].isin(for_completion_idx)]
+    df[
+        ~(df["idx"].isin(for_completion_idx))
+        & ~(df["idx"].isin(already_adjudicated["idx"]))
+    ]
     .groupby("idx")
     .filter(filter_for_adjudication)
     .drop(
@@ -148,5 +156,16 @@ assert not any(
 # Save samples for adjudication
 print(f"For adjudication: {len(for_adjudication)}")
 for_adjudication.to_json(
-    "inputs/ume-adjudication/subset-1a.jsonl", orient="records", lines=True
+    "inputs/ume-adjudication/subset-2.jsonl", orient="records", lines=True
+)
+
+# Subset-3
+all_approved_items = pd.read_csv("data/AllProblemsToRetain_ExceptSubset1.csv")
+
+subset_3 = all_approved_items[
+    ~all_approved_items["idx"].isin(df["idx"])
+]
+
+subset_3.to_json(
+    "inputs/ume-rating/subset-3.jsonl", orient="records", lines=True
 )
