@@ -19,8 +19,5 @@
         "undo"
     ],
     "global_css_dir": "css",
-    "exclude_by": "input",
-    "custom_theme": {
-        "cardMaxWidth": "65%"
-    }
+    "exclude_by": "input"
 }
